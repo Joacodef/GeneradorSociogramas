@@ -1,3 +1,4 @@
 *.code-workspace
 __pycache__
 Cosas que faltan.txt
+*.xlsx

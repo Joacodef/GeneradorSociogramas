@@ -6,8 +6,9 @@ import time
 import os
 import shutil
 
-# Ventana para seleccionar el archivo excel donde se especifican amistades
+nombreHoja = ""
 
+# Ventana para seleccionar el archivo excel donde se especifican amistades
 def seleccionarArchivo():
     working_directory = os.getcwd()
     if os.path.isdir("doctest-output"):
@@ -24,7 +25,7 @@ def seleccionarArchivo():
         if event in [sg.WIN_CLOSED,'Cancelar']:
             break
         elif event in ['Seleccionar']:
-            listaAlu, dictAmigos = Excel.generarListaDict(values["rutaArchivo"],"Hoja1")
+            listaAlu, dictAmigos = Excel.generarListaDict(values["rutaArchivo"],nombreHoja)
             Grafo.generarGrafo(listaAlu, dictAmigos)
             if os.path.isdir("doctest-output"):
                 layout2 = [[sg.Text("Se ha creado sociograma, revisar carpeta \"doctest-output\"")],[sg.Button("Aceptar")]]

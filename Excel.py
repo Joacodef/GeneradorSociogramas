@@ -1,46 +1,70 @@
 from cmath import isnan
 import pandas as pd
 import os
-import math
+import numpy as np
+
+
+"""
+función:        generarListaDict
+
+parámetros:     rutaArchivo     str     Recibe como string la ruta donde se encuentra el archivo excel
+                nombrePestaña   str     String que representa el nombre de la pestaña (en el excel) cuyos datos se quieren extraer, por ahora no se usa - se toma 1era pestaña
+
+explicación:    Se convierte un archivo excel conteniendo los datos de alumnos y sus amigos/enemigos a DataFrame, y crea una lista con estos, 
+                además de un diccionario que contiene "contadores de amistad" para cada uno (amigos son +1 y enemigos -1).
+
+output:         listaAlu    list    Contiene todos los datos de cada alumno 
+                dictAmigos  dict    Contiene contadores de amistad para cada alumno
+
+nota:           Se asume que los nombres de las columnas en el excel serán: "id", "Nombre", 1, 2, 3, 4, 5, 6.
+
+"""
 
 def generarListaDict(rutaArchivo, nombrePestaña):
-    # Setear cwd en el directorio del archivo actual
+    listaAlu = []
+    dictAmigos = dict()
+
+    # Setear cwd en el directorio del archivo actual:
     abspath = os.path.abspath(__file__)
     dname = os.path.dirname(abspath)
     os.chdir(dname)
-    #print(os.getcwd())
-
-    # xlsx = pd.ExcelFile('2021 NOVIEMBRE IERO MEDIO.xlsx')
+    
+    # Leer primera pestaña del excel (sheet_name=0) y guardar en DataFrame:
     xlsx = pd.ExcelFile(rutaArchivo)
-    # Leer pestañas del excel: Probablemente haya que cambiarle los nombres
-    #df1 = pd.read_excel(xlsx,nombrePestaña)
     df1 = pd.read_excel(xlsx,sheet_name=0)
 
-    listaAlu = []
-    dictAmigos = dict()
-    #dictEnemigos = dict()
-    # Guardar alumnos en lista, contar veces que alumno es mencionado como amigo en dictAmigos:
-
+    # Reemplazar todos los NaN por -1
+    df1 = df1.replace(np.nan,-1)
+    
+    # Guardar alumnos en lista, contar veces que alumno es mencionado como amigo o enemigo en dictAmigos:
     for alumno in df1.index:
-        id = str(int(df1["id"][alumno])).upper()
+        # Para el id, los amigos y los enemigos, se asegura de que se haga una conversión a int en caso de que sea float:
+        if isinstance(df1["id"][alumno], float):
+            id = str(int(df1["id"][alumno])).upper()
+        else:
+            id = str(df1["id"][alumno]).upper()
         nombre = df1["Nombre"][alumno]
         amigos = [0,0,0]
         enemigos = [0,0,0]
-        if not math.isnan(df1[1][alumno]):
-            amigos[0] = str(int(df1[1][alumno])).upper()
-        if not math.isnan(df1[2][alumno]):
-            amigos[1] = str(int(df1[2][alumno])).upper()
-        if not math.isnan(df1[3][alumno]):
-            amigos[2] = str(int(df1[3][alumno])).upper()
-        if not math.isnan(df1[4][alumno]):
-            enemigos[0] = str(int(df1[4][alumno])).upper()
-        if not math.isnan(df1[5][alumno]):
-            enemigos[1] = str(int(df1[5][alumno])).upper()
-        if not math.isnan(df1[6][alumno]):
-            enemigos[2] = str(int(df1[6][alumno])).upper()
+
+        # Amigos:
+        for i in range(0,3):
+            if isinstance(df1[1][alumno],float):
+                amigos[i] = str(int(df1[i+1][alumno])).upper()
+            else:
+                amigos[i] = str(df1[i+1][alumno]).upper()
+
+        # Enemigos:
+        for i in range(0,3):
+            if isinstance(df1[i+4][alumno],float):
+                enemigos[i] = str(int(df1[i+4][alumno])).upper()
+            else:
+                enemigos[i] = str(df1[i+4][alumno]).upper()
+        
+        # Guardar en lista:
         listaAlu.append([id,nombre,amigos,enemigos])
-        # Contar amigos y enemigos:
-        # (Definir si queremos diccionarios distintos, o el mismo)
+
+        # Contar amigos y enemigos de cada alumno, guardar en diccionario:
         for amigo in amigos:
             if isinstance(amigo,str):
                 if amigo in dictAmigos.keys():
@@ -53,17 +77,4 @@ def generarListaDict(rutaArchivo, nombrePestaña):
                     dictAmigos[enemigo] -= 1
                 else:
                     dictAmigos[enemigo] = -1
-        
-    """
-        for enemigo in enemigos:
-            if isinstance(enemigo,str):
-                if enemigo in dictEnemigos.keys():
-                    dictEnemigos[enemigo] += 1
-                else:
-                    dictEnemigos[enemigo] = 1
-    for alu in listaAlu:
-        print(alu)
-
-    print("\n")"""
-    #print(dictAmigos)
     return listaAlu, dictAmigos

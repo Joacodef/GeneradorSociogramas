@@ -2,14 +2,14 @@ import graphviz
 
 
 """
-función generarGrafo
+función:	 	generarGrafo
 
-input: 	listaAlu - lista que contiene "alumnos" que a su vez son listas con 4 elementos: id, nombre, amigos y enemigos
-	   	dictAmigos - contiene un diccionario en que las llaves con ids de alumnos y los valores son contadores de cuantos otros alumnos tienen esa id como "amigo"
+parámetros: 	listaAlu	list	lista que contiene "alumnos" que a su vez son listas con 4 elementos: id, nombre, amigos y enemigos
+	   			dictAmigos	dict	contiene un diccionario en que las llaves con ids de alumnos y los valores son contadores de cuantos otros alumnos tienen esa id como "amigo"
 
-output:	grafo - puede ser un archivo pdf, un svg, png, etc... Es el sociograma/grafo hecho a partir de los alumnos y sus amigos
+output:			grafo 	graphviz.Digraph	puede ser un archivo pdf, un svg, png, etc... Es el sociograma/grafo hecho a partir de los alumnos y sus amigos
 
-funcionamiento: recorre listaAlu y dictAmigos en primera instancia para generar los nodos del grafo. Luego genera los arcos.
+explicación: 	recorre listaAlu y dictAmigos en primera instancia para generar los nodos del grafo. Luego genera los arcos.
 """
 
 def generarGrafo(listaAlu, dictAmigos):
@@ -28,7 +28,7 @@ def generarGrafo(listaAlu, dictAmigos):
 				color = 'chartreuse1'
 				ancho = popularidad*1.5
 			elif popularidad < 0:
-				color = 'brown2' 
+				color = 'brown1' 
 				ancho = -popularidad*1.5
 			else:
 				color = 'black'

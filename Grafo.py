@@ -9,7 +9,7 @@ input: 	listaAlu - lista que contiene "alumnos" que a su vez son listas con 4 el
 
 output:	grafo - puede ser un archivo pdf, un svg, png, etc... Es el sociograma/grafo hecho a partir de los alumnos y sus amigos
 
-funcionamiento: recorre listaAlu y dictAmigos en primera instancia para generar los nodos del grafo.
+funcionamiento: recorre listaAlu y dictAmigos en primera instancia para generar los nodos del grafo. Luego genera los arcos.
 """
 
 def generarGrafo(listaAlu, dictAmigos):
@@ -25,10 +25,10 @@ def generarGrafo(listaAlu, dictAmigos):
 		if alumno[0] in dictAmigos.keys():
 			popularidad = dictAmigos[alumno[0]]
 			if popularidad > 0:
-				color = 'green'
+				color = 'chartreuse1'
 				ancho = popularidad*1.5
 			elif popularidad < 0:
-				color = 'red' 
+				color = 'brown2' 
 				ancho = -popularidad*1.5
 			else:
 				color = 'black'
@@ -42,11 +42,11 @@ def generarGrafo(listaAlu, dictAmigos):
 			if isinstance(amigo,str):
 				for alumno2 in listaAlu:
 					if alumno2[0].upper() == amigo.upper():
-						dot.edge(alumno[0],alumno2[0],constraint='false', color='green')
+						dot.edge(alumno[0],alumno2[0],constraint='false', color='chartreuse3')
 		for enemigo in alumno[3]:
 			if isinstance(enemigo,str):
 				for alumno2 in listaAlu:
 					if alumno2[0].upper() == enemigo.upper():
-						dot.edge(alumno[0],alumno2[0],constraint='false', color="red")
+						dot.edge(alumno[0],alumno2[0],constraint='false', color="brown3")
 	
 	dot.render(directory='doctest-output/',filename='sociograma').replace('\\', '/') 

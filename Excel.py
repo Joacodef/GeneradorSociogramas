@@ -43,6 +43,8 @@ def generarListaDict(rutaArchivo, nombrePestaña):
             id = str(int(df1["id"][alumno])).upper()
         else:
             id = str(df1["id"][alumno]).upper()
+        if id == "-1":
+            continue
         nombre = df1["Nombre"][alumno]
         amigos = [0,0,0]
         enemigos = [0,0,0]

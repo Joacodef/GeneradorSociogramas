@@ -35,11 +35,12 @@ def generarGrafo(listaAlu, dictAmigos):
 		else:
 			color = 'black'
 		if str(alumno[0]) == "-1": continue
-		print("Nodo a crear: id - "+str(alumno[0])+", nombre - "+str(alumno[1])+", color - "+str(color)+", ancho - "+str(ancho)+", popularidad - "+str(popularidad)) 
+		#print("Nodo a crear: id - "+str(alumno[0])+", nombre - "+str(alumno[1])+", color - "+str(color)+", ancho - "+str(ancho)+", popularidad - "+str(popularidad)) 
 		dot.node(alumno[0], alumno[1], shape='box', color=color, penwidth=str(ancho))
 		
 
 	for alumno in listaAlu:
+		#print("Creando arcos desde:",alumno[0],alumno[1],"hasta:",alumno[2],alumno[3])
 		for amigo in alumno[2]:
 			if isinstance(amigo,str):
 				for alumno2 in listaAlu:

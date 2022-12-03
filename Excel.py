@@ -48,7 +48,7 @@ def generarListaDict(rutaArchivo, nombrePestaña):
         nombre = df1["Nombre"][alumno]
         amigos = [0,0,0]
         enemigos = [0,0,0]
-
+        
         # Amigos:
         for i in range(0,3):
             if isinstance(df1[1][alumno],float):
@@ -65,7 +65,8 @@ def generarListaDict(rutaArchivo, nombrePestaña):
         
         # Guardar en lista:
         listaAlu.append([id,nombre,amigos,enemigos])
-
+        
+        # print("Alumno actual:",id,"Nombre", nombre,"amigos",amigos,"enemigos",enemigos)
         # Contar amigos y enemigos de cada alumno, guardar en diccionario:
         for amigo in amigos:
             if isinstance(amigo,str):
